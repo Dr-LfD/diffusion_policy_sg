@@ -58,5 +58,5 @@ def test_real():
 
 def test_pop():
     buff = ReplayBuffer.create_from_path(
-        '/home/chengchi/dev/diffusion_policy/data/pusht_cchi_v3_replay.zarr',
+        os.path.expanduser('~/dev/diffusion_policy/data/pusht_cchi_v3_replay.zarr'),
         mode='rw')

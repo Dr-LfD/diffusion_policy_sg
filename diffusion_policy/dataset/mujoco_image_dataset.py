@@ -96,7 +96,7 @@ class MujocoImageDataset(BaseImageDataset):
 
 def test():
     import os
-    zarr_path = os.path.expanduser('/home/yihuai/robotics/repositories/mujoco/mujoco-env/data/collect_heuristic_data/2024-12-24_11-36-15_100episodes/merged_data.zarr')
+    zarr_path = os.path.expanduser('~/dev/mujoco-env/data/collect_heuristic_data/merged_data.zarr')
     dataset = MujocoImageDataset(zarr_path, horizon=16)
     print(dataset[0])
     # from matplotlib import pyplot as plt

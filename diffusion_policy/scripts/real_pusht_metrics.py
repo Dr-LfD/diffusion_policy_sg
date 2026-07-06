@@ -93,7 +93,7 @@ def main(reference, input, camera_idx, n_workers):
     last_img = last_frame.to_ndarray(format='rgb24')
     target_mask = get_t_mask(last_img)
 
-    # path = '/home/ubuntu/dev/diffusion_policy/data/pusht_real/eval_20230109/diffusion_hybrid_ep136/videos/4/0.mp4'
+    # path = 'data/pusht_real/eval_20230109/diffusion_hybrid_ep136/videos/4/0.mp4'
     # last_frame = None
     # with av.open(path) as container:
     #     stream = container.streams.video[0]

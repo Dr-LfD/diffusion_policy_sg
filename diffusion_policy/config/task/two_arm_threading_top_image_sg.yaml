@@ -1,13 +1,10 @@
-name: transport_image
+name: two_arm_threading_image
 
 shape_meta: &shape_meta
   # acceptable types: rgb, low_dim
   obs:
-    shouldercamera0_image:
-      shape: [3, 84, 84]
-      type: rgb
-    robot0_eye_in_hand_image:
-      shape: [3, 84, 84]
+    agentview_image:
+      shape: [3, 128, 128]
       type: rgb
     robot0_eef_pos:
       shape: [3]
@@ -16,12 +13,6 @@ shape_meta: &shape_meta
       shape: [4]
     robot0_gripper_qpos:
       shape: [2]
-    shouldercamera1_image:
-      shape: [3, 84, 84]
-      type: rgb
-    robot1_eye_in_hand_image:
-      shape: [3, 84, 84]
-      type: rgb
     robot1_eef_pos:
       shape: [3]
       # type default: low_dim
@@ -32,26 +23,25 @@ shape_meta: &shape_meta
   action: 
     shape: [14]
 
-task_name: &task_name transport
+task_name: &task_name two_arm_threading
 dataset_type: &dataset_type ph
-# dataset_path: &dataset_path data/robomimic/datasets/${task.task_name}/${task.dataset_type}/image.hdf5
-dataset_path: &dataset_path data/dmg/two_arm_transport.hdf5
+dataset_path: &dataset_path data/dmg/two_arm_threading_pc_instance_100_sg_100.hdf5
 abs_action: &abs_action False
 
 env_runner:
-  _target_: diffusion_policy.env_runner.robomimic_image_runner.RobomimicImageRunner
+  _target_: diffusion_policy.env_runner.robomimic_sg_image_runner.RobomimicSGImageRunner
   dataset_path: *dataset_path
   shape_meta: *shape_meta
-  n_train: 6
-  n_train_vis: 2
+  n_train: 50
+  n_train_vis: 5
   train_start_idx: 0
-  n_test: 3
-  n_test_vis: 3
+  n_test: 0
+  n_test_vis: 0
   test_start_seed: 100000
   max_steps: 700
   n_obs_steps: ${n_obs_steps}
   n_action_steps: ${n_action_steps}
-  render_obs_key: 'shouldercamera0_image'
+  render_obs_key: 'agentview_image'
   fps: 10
   crf: 22
   past_action: ${past_action_visible}
@@ -61,7 +51,8 @@ env_runner:
 # evaluation at this config requires a 16 core 64GB instance.
 
 dataset:
-  _target_: diffusion_policy.dataset.robomimic_replay_image_dataset.RobomimicReplayImageDataset
+  # _target_: diffusion_policy.dataset.robomimic_replay_image_dataset.RobomimicReplayImageDataset
+  _target_: diffusion_policy.dataset.robomimic_replay_image_sg_dataset.RobomimicReplayImageSgDataset
   shape_meta: *shape_meta
   dataset_path: *dataset_path
   horizon: ${horizon}
@@ -71,6 +62,6 @@ dataset:
   abs_action: *abs_action
   rotation_rep: 'rotation_6d'
   use_legacy_normalizer: False
-  use_cache: True
+  use_cache: False
   seed: 42
   val_ratio: 0.02
